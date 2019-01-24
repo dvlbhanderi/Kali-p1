@@ -1,10 +1,12 @@
-# Andrew Durden (Adurden)
+## Andrew Durden (Adurden)
+ * set up repository structure
+ * set up testing suite
+ * set up driver skeleton
+
+## Priyank Malviya (priyankmalviya)
 
 
-# Priyank Malviya (priyankmalviya)
+## Dhaval Bhanderi (dvlbhanderi)
 
 
-# Dhaval Bhanderi (dvlbhanderi)
-
-
-# Rutu Ghandi (rutugandhi)
+## Rutu Ghandi (rutugandhi)
