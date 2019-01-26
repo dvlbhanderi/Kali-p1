@@ -36,7 +36,7 @@ class SimpleTest(PySparkTest):
     def test_toxenization_and_preproc(self):
         dat = [('filename1',
                 '00401060 53 8F 48 00 A9 88 40 00 04 4E 00 00 F9 31 4F 00'),
-               ('filename2'
+               ('filename2',
                 '00401070 1D 99 02 47 D5 4F 00 00 03 05 B5 42 CE 88 65 43')]
         test_rdd = self.spark.sparkContext.parallelize(dat, 2)
         results = malware_classifier.tokenize_and_preproc(test_rdd).collect()
@@ -58,6 +58,7 @@ class SimpleTest(PySparkTest):
                             ('filename2', '65'), ('filename2', '43')]
         self.assertEqual(set(results), set(expected_results))
 
+    def test_
 
 if __name__ == '__main__':
     unittest.main()
