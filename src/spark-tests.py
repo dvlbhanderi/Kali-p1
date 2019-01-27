@@ -33,7 +33,14 @@ class PySparkTest(unittest.TestCase):
 
 class SimpleTest(PySparkTest):
 
-    def test_toxenization_and_preproc(self):
+    def test_tokenization_and_preproc(self):
+        """
+        This function will test the tokenize_and_preproc unit of the driver
+        module. That unit should recieve a pairRDD of file names and file
+        bodies split the body on whitespace to tokenize and filter out line
+        pointer.
+        """
+
         dat = [('filename1',
                 '00401060 53 8F 48 00 A9 88 40 00 04 4E 00 00 F9 31 4F 00'),
                ('filename2',
@@ -58,7 +65,23 @@ class SimpleTest(PySparkTest):
                             ('filename2', '65'), ('filename2', '43')]
         self.assertEqual(set(results), set(expected_results))
 
-    def test_
+    def test_prior_calculations(self):
+        """
+        This function should calculate the priors for each class by counting
+        the occurances of each class type in a y_train set and dividing by the
+        number of unique classes which exist
+        """
+        dat = ['6', '3', '1', '7', '9', '1', '6', '3', '3', '7', '2', '1', '6',
+               '8', '2', '3', '2', '5', '3', '3', '1', '4', '3', '2', '8', '8',
+               '8', '2', '4', '3', '6', '5', '2', '9', '7', '6', '5', '4', '3',
+               '2', '2', '2', '5', '2', '1', '7', '3', '9', '8', '3']
+        test_rdd = self.spark.sparkContext.parallelize(dat, 2)
+        results = malware_classifier.calculate_priors(test_rdd).collect()
+        expected_results = [('1', 0.1), ('2', 0.2), ('3', 0.22), ('4', 0.06),
+                            ('5', 0.08), ('6', 0.1), ('7', 0.08), ('8', 0.1),
+                            ('9', 0.06)]
+        self.assertEqual(set(results), set(expected_results))
+
 
 if __name__ == '__main__':
     unittest.main()
