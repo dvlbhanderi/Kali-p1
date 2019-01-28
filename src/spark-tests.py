@@ -67,9 +67,9 @@ class SimpleTest(PySparkTest):
 
     def test_prior_calculations(self):
         """
-        This function should calculate the priors for each class by counting
+        This function tests the calculation the priors for each class by counting
         the occurances of each class type in a y_train set and dividing by the
-        number of unique classes which exist
+        number of documents which exist
         """
         dat = ['6', '3', '1', '7', '9', '1', '6', '3', '3', '7', '2', '1', '6',
                '8', '2', '3', '2', '5', '3', '3', '1', '4', '3', '2', '8', '8',
@@ -82,6 +82,47 @@ class SimpleTest(PySparkTest):
                             ('9', 0.06)]
         self.assertEqual(set(results), set(expected_results))
 
+    def test_likelihood_calculations(self):
+        """
+        This function tests the calculations of likelihoods given a pair RDD of
+        (label, word) where the likelihood is given in form
+        ((label,word) likelihood) by counting word counts totally and by label
+        """
+        dat = [('1', '53'), ('1', '8F'),
+               ('1', '48'), ('1', '00'),
+               ('1', 'A9'), ('1', '88'),
+               ('2', '40'), ('2', '00'),
+               ('2', '04'), ('2', '4E'),
+               ('2', '00'), ('2', '00'),
+               ('3', 'F9'), ('3', '31'),
+               ('3', '4F'), ('3', '00'),
+               ('3', '1D'), ('3', '99'),
+               ('4', '02'), ('4', '47'),
+               ('4', 'D5'), ('4', '4F'),
+               ('4', '00'), ('4', '00'),
+               ('5', '03'), ('5', '05'),
+               ('5', 'B5'), ('5', '42'),
+               ('5', 'CE'), ('5', '88')]
+        test_rdd = self.spark.sparkContext.parallelize(dat, 2)
+        results = malware_classifier.calculate_priors(test_rdd).collect()
+        expected_results = [(('1', '53'), 1.0), (('1', '8F'), 1.0),
+                            (('1', '88'), 0.5), (('3', '31'), 1.0),
+                            (('3', '00'), 0.14285714285714285),
+                            (('3', '99'), 1.0), (('4', '4F'), 0.5),
+                            (('2', '40'), 1.0), (('3', '4F'), 0.5),
+                            (('3', '1D'), 1.0), (('4', '02'), 1.0),
+                            (('4', '47'), 1.0),
+                            (('4', '00'), 0.2857142857142857),
+                            (('5', 'CE'), 1.0), (('5', '88'), 0.5),
+                            (('1', '48'), 1.0),
+                            (('2', '00'), 0.42857142857142855),
+                            (('2', '04'), 1.0), (('3', 'F9'), 1.0),
+                            (('5', 'B5'), 1.0), (('5', '42'), 1.0),
+                            (('1', '00'), 0.14285714285714285),
+                            (('1', 'A9'), 1.0), (('2', '4E'), 1.0),
+                            (('4', 'D5'), 1.0), (('5', '03'), 1.0),
+                            (('5', '05'), 1.0)]
+        self.assertEqual(set(results), set(expected_results))
 
 if __name__ == '__main__':
     unittest.main()
