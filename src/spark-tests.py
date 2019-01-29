@@ -104,7 +104,7 @@ class SimpleTest(PySparkTest):
                ('5', 'B5'), ('5', '42'),
                ('5', 'CE'), ('5', '88')]
         test_rdd = self.spark.sparkContext.parallelize(dat, 2)
-        results = malware_classifier.calculate_priors(test_rdd).collect()
+        results = malware_classifier.calculate_likelihood(test_rdd).collect()
         expected_results = [(('1', '53'), 1.0), (('1', '8F'), 1.0),
                             (('1', '88'), 0.5), (('3', '31'), 1.0),
                             (('3', '00'), 0.14285714285714285),
