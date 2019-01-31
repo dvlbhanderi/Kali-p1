@@ -390,11 +390,11 @@ class SimpleTest(PySparkTest):
                ('filename2', '00'), ('filename2', '00'),
                ('filename2', '00'), ('filename2', '00'),
                ('filename2', '00'), ('filename2', '00')]
-        likelihoods_rdd = sc.parallelize(likelihoods)
-        priors_rdd = sc.parallelize(priors)
-        dat_rdd = sc.parallelize(dat)
+        likelihoods_rdd = self.spark.sparkContext.parallelize(likelihoods)
+        priors_rdd = self.spark.sparkContext.parallelize(priors)
+        dat_rdd = self.spark.sparkContext.parallelize(dat)
         results = malware_classifier.classify(likelihoods_rdd, priors_rdd,
-                                              dat_rdd)
+                                              dat_rdd).collect()
         expected_results = [('filename1', 3), ('filename2', 2)]
         self.assertEqual(set(results), set(expected_results))
 
