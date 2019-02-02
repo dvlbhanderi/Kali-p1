@@ -23,7 +23,7 @@ List of requirements and links to install them
 - [Python 3.6](https://www.python.org/downloads/release/python-360/)
 - [Anaconda](https://www.anaconda.com/) - Python Environment virtualization.
 - [Apache Spark](https://spark.apache.org/downloads.html)
-- [Pyspark setup for Windows](https://medium.com/@GalarnykMichael/install-spark-on-windows-pyspark-4498a5d8d66c) For Windows
+- [Pyspark setup for Windows](https://medium.com/@GalarnykMichael/install-spark-on-windows-pyspark-4498a5d8d66c) 
 - [Pyspark setup for Ubuntu](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 - [Pyspark setup for MacOS](https://medium.com/@GalarnykMichael/install-spark-on-mac-pyspark-453f395f240b)
 
@@ -55,7 +55,7 @@ Data from the Microsoft Malware Classification Challenge is used for this projec
 //TBD
 
 # Authors
-See the [contributors](https://github.com/dsp-uga/Kali-p1/blob/master/CONTRIBUTORS.md) file for details.
+See the [Contributors](https://github.com/dsp-uga/Kali-p1/blob/master/CONTRIBUTORS.md) file for details.
 
 # Licencse
 See the [License](https://github.com/dsp-uga/Kali-p1/blob/master/LICENSE) file for details.
