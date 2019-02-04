@@ -14,7 +14,7 @@ This repo consist of a large scale classifier to classify the documents as being
 
 ## Getting Started
 
-Make sure you have all the prerequisites installed before proceeding. Skipping or missing certain dependencies will give you some errors that will waste a considerable amount of your time. Especially while installing Apache Spark, keep in mind that there are some versions of Java that are not yet supported. Also add winutils.exe file separately while installing Apache Spark on Wondows.
+Make sure you have all the prerequisites installed before proceeding. Skipping or missing certain dependencies will give you some errors that will waste a considerable amount of your time. Especially while installing Apache Spark, keep in mind that there are some versions of Java that are not yet supported. Also add winutils.exe file separately while installing Apache Spark on Windows.
 
 ### Prerequisites
 
