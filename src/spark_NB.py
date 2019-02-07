@@ -20,23 +20,16 @@ def read_data(byte_data_directory, x_filename, y_filename=None):
     at x_filename. if y_filename is supplied labels will be read in and a map
     will be created as well and a label column added to the returned dataframe
     """
-    """
-    xfile = open(x_filename)
-    X_files = xfile.read().splitlines()
-    """
+
     X_files = sc.textFile(x_filename).collect()
 
     X_filenames = list(map(lambda x: byte_data_directory+x+'.bytes', X_files))
     dat = sc.wholeTextFiles(",".join(X_filenames))
 
     if(y_filename is not None):
-        """
-        yfile = open(y_filename)
-        y_labels = yfile.read().splitlines()
-        """
         y_labels = sc.textFile(y_filename).collect()
         label_map = sc.broadcast(dict(zip(X_filenames, y_labels)))
-        dat = dat.map(lambda x: (x[0], x[1], float(label_map.value[x[0]])))
+        dat = dat.map(lambda x: (x[0], x[1], int(label_map.value[x[0]])))
         dat = dat.toDF(['filname', 'text', 'label']).repartition(12)
     else:
         dat = dat.toDF(['filname', 'text']).repartition(12)
@@ -53,7 +46,6 @@ def create_pipeline():
     This is where most of the work will be done in improving the model
     """
 
-    # label_stringIdx = StringIndexer(inputCol="category", outputCol="label")
     tokenizer = RegexTokenizer(inputCol="text", outputCol="words",
                                pattern="(?<=\\s)..", gaps=False)
     hashingTF = HashingTF(numFeatures=256, inputCol=tokenizer.getOutputCol(),
@@ -66,8 +58,10 @@ def create_pipeline():
 
 testLabels = sys.argv[4] if sys.argv[4] != 'None' else None
 
+
 dat_train = read_data(sys.argv[5],
                       sys.argv[1], sys.argv[2])
+
 pipeline = create_pipeline()
 
 # fit the pipeline to the training data
@@ -81,9 +75,5 @@ pred = model.transform(dat_test)
 pred.persist()
 pred.show()
 
-if(testLabels is not None):
-    # evaluate model on texting set predictions
-    evaluator = MulticlassClassificationEvaluator(predictionCol="prediction")
-    print(evaluator.evaluate(pred))
 
-pred.select("prediction").coalesce(1).write.format("text").option("header", "false").mode("append").save("gs://test-code22/model_output.txt")
+pred.select("prediction").rdd().map(lambda x: int(x+1)).coallesce(1).saveAsTextFile('gs://test-code22/model_out')
