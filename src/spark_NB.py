@@ -1,3 +1,5 @@
+import sys
+
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.ml.classification import NaiveBayes
@@ -56,15 +58,15 @@ def create_pipeline():
     return(pipeline)
 
 
-dat_train = read_data('file:/home/durden/Desktop/Practicum/Kali-p1/data/',
-                      "X_small_train.txt", "y_small_train.txt")
+dat_train = read_data(sys.argv[5],
+                      sys.argv[1], sys.argv[2])
 pipeline = create_pipeline()
 
 # fit the pipeline to the training data
 model = pipeline.fit(dat_train)
 
-dat_test = read_data('file:/home/durden/Desktop/Practicum/Kali-p1/data/',
-                     "X_small_test.txt", "y_small_test.txt")
+dat_test = read_data(sys.argv[5],
+                     sys.argv[3], sys.argv[4])
 
 # create predictions on testing set
 pred = model.transform(dat_test)
