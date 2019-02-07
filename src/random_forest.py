@@ -5,8 +5,9 @@
 
 import pyspark
 from pyspark.sql import SQLContext, Row
-from pyspark.ml.feature import  CountVectorizer
+from pyspark.ml.feature import CountVectorizer,CountVectorizerModel
 from pyspark.ml.classification import RandomForestClassifier
+from pyspark.ml.classification import RandomForestClassificationModel
 from pyspark.ml.evaluation import RegressionEvaluator,MulticlassClassificationEvaluator
 from pyspark.sql import SparkSession
 
@@ -30,14 +31,14 @@ def configure_spark():
 
 
 def readFile(path):
-    return sc.textFile(path)
+    return sc.textFile(path,minPartitions = 32)
 
 
 # In[4]:
 
 
 def readWholeFile(path):
-    return sc.wholeTextFiles(path)
+    return sc.wholeTextFiles(path, minPartitions = 32)
 
 
 # In[5]:
@@ -144,7 +145,9 @@ def rddToDf_training(dat_rdd):
 
 def rddToDf_testing(dat_rdd):
     #converting the rdd to dataframe with labels
-    final_df = dat_rdd.map(lambda line : Row(data = line[1], filename = line[0])).toDF()
+    #final_df = dat_rdd.map(lambda line : Row(data = line[1], filename = line[0])).toDF()
+    final_df = dat_rdd.map(lambda line : Row(data = line[1][1], label = line[1][0], filename = line[0])).toDF()
+
     return final_df
 
 
@@ -249,6 +252,7 @@ if __name__ == '__main__':
 
     print('********************** after configuration **************************')
 
+
     train_data, labelfile_rdd = readTrainingFiles('gs://uga-dsp/project1/files/X_small_train.txt','gs://uga-dsp/project1/files/y_small_train.txt','gs://uga-dsp/project1/data/bytes/')
 
     print('**************** after reading training files **********************')
@@ -269,7 +273,10 @@ if __name__ == '__main__':
     print('***************** before converting rdd to dataframe **************')
     print('***************** before converting rdd to dataframe **************')
     print('***************** before converting rdd to dataframe ***************')
+
     train_data = rddToDf_training(train_data)
+
+    train_data.write.parquet('gs://project1_dsp_priyank/data/traindata_df.parquet')
 
     print('***************** after converting rdd to dataframe ***************')
     print('***************** after converting rdd to dataframe ***************')
@@ -295,9 +302,13 @@ if __name__ == '__main__':
     train_data.write.parquet('gs://project1_dsp_priyank/data/traindata_cv.parquet')
     cv.save('gs://project1_dsp_priyank/data/countvectorizer')
 
+
+    #train_data = Spark.read.parquet('gs://project1_dsp_priyank/data/traindata_cv.parquet')
+
     print('********************* after count vectorizer *****************')
     print('********************* after count vectorizer *****************')
     print('********************* after count vectorizer *****************')
+
     train_data = typeCastColumn(train_data,'label','int')
 
     print('************** before training the model *************')
@@ -305,16 +316,24 @@ if __name__ == '__main__':
     print('************** before training the model *************')
 
     rfModel = train_random_forest(train_data)
+    rfModel.save('gs://project1_dsp_priyank/data/rfmodel')
+
 
     print('********************* after model training *****************')
     print('********************* after model training *****************')
     print('********************* after model training *****************')
 
-    testing_data = readTestingFiles('gs://uga-dsp/project1/files/X_small_test.txt', 'gs://uga-dsp/project1/data/bytes/')
 
-    testing_data = preprocessing_testingfiles(testing_data)
+    #cv = CountVectorizerModel.load('gs://project1_dsp_priyank/data/countvectorizer/')
 
-    testing_data = rddToDf_testing(testing_data)
+
+
+    testing_data, labeltest_rdd = readTrainingFiles('gs://uga-dsp/project1/files/X_small_test.txt','gs://uga-dsp/project1/files/y_small_test.txt' ,'gs://uga-dsp/project1/data/bytes/')
+
+    testing_data = preprocessing_trainingfiles(labeltest_rdd ,testing_data)
+
+    testing_data = rddToDf_training(testing_data)
+
 
     testing_data = cv.transform(testing_data)
     testing_data.write.parquet('gs://project1_dsp_priyank/data/testing_data.parquet')
@@ -323,9 +342,21 @@ if __name__ == '__main__':
     print('********************* after testing  *****************')
     print('********************* after testing  *****************')
 
+    print('********* before type casting ************ ')
+    print('********* before type casting ************ ')
+    print('********* before type casting ************ ')
+
+
+    rfModel = RandomForestClassificationModel.load('gs://project1_dsp_priyank/data/rfmodel')
+    #testing_data = Spark.read.parquet('gs://project1_dsp_priyank/data/testing_data.parquet')
+    testing_data = typeCastColumn(testing_data,'label','int')
+
+
+
+
 
     predictions = predict(rfModel, testing_data)
-    predictions.write.parquet('gs://project1_dsp_priyank/data/predictions.parquet')
+    predictions.write.parquet('gs://project1_dsp_priyank/data/predictions_1.parquet')
 
 
     print('********************* after predicitons  *****************')
@@ -334,4 +365,4 @@ if __name__ == '__main__':
 
 
     accuracy = evaluate_accuracy(predictions)
-    print('The accuracy for the code by Arch Man and Priyank is :' , accuracy )
+    print('The accuracy for the code  is :' , accuracy )
