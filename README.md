@@ -51,6 +51,23 @@ Data from the Microsoft Malware Classification Challenge is used for this projec
   The first hexadecimal token in each line just indicates the line pointer, hence no role in classification and is ignored.
   All the other hexadecimal pairs are the code of the malware instance and are used for prediction. 
 
+# Included Scripts
+All source code is included in the src directory of the repository
+
+  ### spark-tests.py: (development discontinued due to time constraint)
+    This file can be run using '$ python spark-tests.py' and will boot up a local spark session and test each of the functions in malware_classifier.py
+  ### malware_classifier.py: (development discontinued due to time constraint)
+    This script must be submitted to a spark session as a job using '$ spark-submit malware_classifier [args]'
+    
+    The first argument should be the location of a text file containing names of byte files to train the model
+    
+    The second argument should be the location of a text file containing training labels
+    
+    The third argument should be the directory of all of the byte files
+    
+    The fourth argument should be the location of a text file containign names of byte files to classify
+    
+
 # Contributing
 //TBD
 
