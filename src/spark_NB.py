@@ -1,7 +1,7 @@
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.ml.classification import NaiveBayes
-from pyspark.ml.feature import CountVectorizer, HashingTF, Tokenizer
+from pyspark.ml.feature import CountVectorizer, HashingTF, Tokenizer, RegexTokenizer
 from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import StringIndexer
@@ -26,7 +26,8 @@ dat_train = dat_train.map(lambda x: (x[0], x[1], float(label_map.value[x[0]])))
 dat_train = dat_train.toDF(['filname', 'text', 'category']).repartition(12)
 
 label_stringIdx = StringIndexer(inputCol="category", outputCol="label")
-tokenizer = Tokenizer(inputCol="text", outputCol="words")
+tokenizer = RegexTokenizer(inputCol="text", outputCol="words",
+                           pattern="(?<=\\s)..", gaps=False)
 hashingTF = HashingTF(numFeatures=256, inputCol=tokenizer.getOutputCol(),
                       outputCol="features")
 nb = NaiveBayes(smoothing=1)
