@@ -7,6 +7,7 @@ from pyspark.ml.feature import CountVectorizer, HashingTF, RegexTokenizer
 from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import StringIndexer
+from pyspark.sql import functions as F
 
 
 sc = SparkContext.getOrCreate()
@@ -24,16 +25,20 @@ def read_data(byte_data_directory, x_filename, y_filename=None):
     X_files = sc.textFile(x_filename).collect()
 
     X_filenames = list(map(lambda x: byte_data_directory+x+'.bytes', X_files))
-    dat = sc.wholeTextFiles(",".join(X_filenames))
+    dat = sc.wholeTextFiles(",".join(X_filenames), minPartitions=100)
+    X_df = sc.parallelize(X_filenames, numSlices=100).map(lambda x: (x,x.split('/')[-1])).toDF(['filename','byte'])
+    X_df = X_df.withColumn("idx", F.monotonically_increasing_id())
 
     if(y_filename is not None):
         y_labels = sc.textFile(y_filename).collect()
         label_map = sc.broadcast(dict(zip(X_filenames, y_labels)))
         dat = dat.map(lambda x: (x[0], x[1], int(label_map.value[x[0]])))
-        dat = dat.toDF(['filname', 'text', 'label']).repartition(12)
+        dat = dat.toDF(['filename', 'text', 'label'])
     else:
-        dat = dat.toDF(['filname', 'text']).repartition(12)
-
+        dat = dat.toDF(['filename', 'text'])
+        dat.show()
+    dat = X_df.join(dat, X_df.filename == dat.filename, how='left').sort("idx")
+    print(dat.rdd.getNumPartititions)
     return(dat)
 
 
@@ -69,11 +74,12 @@ model = pipeline.fit(dat_train)
 
 dat_test = read_data(sys.argv[5],
                      sys.argv[3], testLabels)
-
+dat_test.show()
 # create predictions on testing set
 pred = model.transform(dat_test)
 pred.persist()
 pred.show()
 
 
-pred.select("prediction").rdd().map(lambda x: int(x+1)).coallesce(1).saveAsTextFile('gs://test-code22/model_out')
+pred_list = pred.select("prediction").rdd.map(lambda x: int(x[0]+1)).collect()
+print(pred_list)
