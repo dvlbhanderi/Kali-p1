@@ -86,7 +86,7 @@ class SimpleTest(PySparkTest):
         """
         This function tests the calculations of likelihoods given a pair RDD of
         (label, word) where the likelihood is given in form
-        ((label,word) likelihood) by counting word counts totally and by label
+        (word, [likelihoods for each class]) by counting word counts totally and by label
         """
         dat = [('53', 1), ('8F', 1), ('48', 1),
                ('00', 1), ('A9', 1), ('88', 1),
