@@ -23,18 +23,15 @@ def fetch_url(file_row):
     return(byte_text)
 
 
-def clean_data(data_row):
+def preprocessing(data_row):
 
-    #Remove new line.
+    #Removing the blank lines.
     data_row = re.sub('\\r\\n', ' ', str(data_row))
 
-    #Remove unnecessary question marks.
+    #Removing the pair of unnecessary question-marks.
     data_row = re.sub('\??', '', str(data_row))
 
-    #Remove the rows with all zeros.
-    data_row = re.sub('00 00 00 00 00 00 00 00', '', str(data_row))
-
-    #Remove the rows with all Cs.
+    #Removing the rows of Cs.
     data_row = re.sub('CC CC CC CC CC CC CC CC', '', str(data_row))
 
     #Remove the headers. Words larger than 2 characters.
@@ -81,8 +78,8 @@ rdd_test = rdd_test_x.join(rdd_test_y)
 
 #Get the  file list files.
 #Making the pair of (Label, Bytes)
-rdd_train_text = rdd_train.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], clean_data(x[2])))
-rdd_test_text = rdd_test.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], clean_data(x[2])))
+rdd_train_text = rdd_train.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
+rdd_test_text = rdd_test.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
 
 #Collect the data.
 #df_train_text = rdd_train_text.toDF("category", "text")
