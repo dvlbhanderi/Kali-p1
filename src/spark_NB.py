@@ -38,7 +38,7 @@ def read_data(byte_data_directory, x_filename, y_filename=None):
         dat = dat.toDF(['filename', 'text'])
         dat.show()
     dat = X_df.join(dat, X_df.filename == dat.filename, how='left').sort("idx")
-    print(dat.rdd.getNumPartititions)
+    print(dat.rdd.getNumPartitions())
     return(dat)
 
 
