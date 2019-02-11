@@ -26,8 +26,8 @@ def read_data(byte_data_directory, x_filename, y_filename=None):
     X_files = sc.textFile(x_filename).collect()
 
     X_filenames = list(map(lambda x: byte_data_directory+x+'.bytes', X_files))
-    dat = sc.wholeTextFiles(",".join(X_filenames), minPartitions=100)
-    X_df = sc.parallelize(X_filenames, numSlices=100).map(lambda x: (x,x.split('/')[-1])).toDF(['filename','byte'])
+    dat = sc.wholeTextFiles(",".join(X_filenames), minPartitions=300)
+    X_df = sc.parallelize(X_filenames, numSlices=300).map(lambda x: (x,x.split('/')[-1])).toDF(['filename','byte'])
     X_df = X_df.withColumn("idx", F.monotonically_increasing_id())
 
     if(y_filename is not None):
