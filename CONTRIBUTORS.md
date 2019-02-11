@@ -1,7 +1,9 @@
 ## Andrew Durden (Adurden)
  * set up repository structure
- * set up testing suite
+ * set up and wrote testing suite
  * set up driver skeleton
+ * edited README
+ * wrote spark_NB suite to apply preimplemented Naive Bayes pipeline
 
 ## Priyank Malviya (priyankmalviya)
  * coded preprocessing and smoothing
