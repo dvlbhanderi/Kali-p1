@@ -28,10 +28,6 @@ List of requirements and links to install them
 - [Pyspark setup for MacOS](https://medium.com/@GalarnykMichael/install-spark-on-mac-pyspark-453f395f240b)
 - [Google Cloud Platform or similar service](https://cloud.google.com/docs/)
 
-# Dependcies
-//TBD
-
-
 # Data
 Data from the Microsoft Malware Classification Challenge is used for this project.
   ## Data Location
@@ -83,13 +79,11 @@ All source code is included in the src directory of the repository
     The fifth argument should be the directory of the byte files to be used
     
 # Execution on the Google Cloud Platform
-1) Make a storage bucket on the Storage service of the GCP and upload the .py file on it.
-2) Apache Spark models are supported on Dataproc. Enable Compute Engine and Dataproc
-3) Now you can create a Cluster. Issue #29 of this repo gives a snapshot of the setup of the cluster.
-4) Create a Job and give the the Google storage path of the .py file (created in step 1) in the main file section of the Job. Submit the job on the created cluster.
-
-# Contributing
-//TBD
+1) Set up a [project](https://cloud.google.com/dataproc/docs/guides/setup-project)
+2) Make a storage bucket on the [Storage](https://cloud.google.com/storage/docs/creating-buckets) service of the GCP and upload the .py file on it.
+3) Apache Spark models are supported on Dataproc. Enable Compute Engine and Dataproc
+4) Now you can create a [Cluster](https://cloud.google.com/dataproc/docs/guides/create-cluster). Issue #29 of this repo gives a snapshot of the setup of the cluster.
+5) Create a Job and give the the Google storage path of the .py file (created in step 2) in the main file section of the Job. [Submit](https://cloud.google.com/dataproc/docs/guides/submit-job) the job on the created cluster.
 
 # Authors
 See the [Contributors](https://github.com/dsp-uga/Kali-p1/blob/master/CONTRIBUTORS.md) file for details.
