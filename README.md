@@ -1,6 +1,6 @@
 # Kali-p1
 
-This repo consist of a large scale classifier to classify the documents as being under one of the following nine categories :-
+This repo consists of a large scale classifier to classify the documents as being under one of the following nine malware categories :-
 * 1.) Rammit
 * 2.) Lollipop
 * 3.) Kelihos_ver3
@@ -26,6 +26,7 @@ List of requirements and links to install them
 - [Pyspark setup for Windows](https://medium.com/@GalarnykMichael/install-spark-on-windows-pyspark-4498a5d8d66c) 
 - [Pyspark setup for Ubuntu](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 - [Pyspark setup for MacOS](https://medium.com/@GalarnykMichael/install-spark-on-mac-pyspark-453f395f240b)
+- [Google Cloud Platform or similar service](https://cloud.google.com/docs/)
 
 # Dependcies
 //TBD
@@ -41,14 +42,14 @@ Data from the Microsoft Malware Classification Challenge is used for this projec
   ## File Structure
   Each file looks as follows :
   '''
-  00401060 53 8F 48 as 00 87 ad ds
+  00401060 53 8F 48 as 00 87 ad ds 
   00401070 43 4F 58 Fs 40 47 Fd Gs
   00401060 63 6F 68 Gs 60 67 Gd Gs
   00401060 13 1F 18 Ws 10 17 Wd Ws
   00401060 23 2F 28 Ts 20 27 Td Ts
   '''
   ## File Interpretation
-  The first hexadecimal token in each line just indicates the line pointer, hence no role in classification and is ignored.
+  The first hexadecimal token in each line just indicates the line pointer, hence plays no role in classification and is ignored.
   All the other hexadecimal pairs are the code of the malware instance and are used for prediction. 
 
 # Included Scripts
@@ -81,7 +82,11 @@ All source code is included in the src directory of the repository
     
     The fifth argument should be the directory of the byte files to be used
     
-    
+# Execution on the Google Cloud Platform
+1) Make a storage bucket on the Storage service of the GCP and upload the .py file on it.
+2) Apache Spark models are supported on Dataproc. Enable Compute Engine and Dataproc
+3) Now you can create a Cluster. Issue #29 of this repo gives a snapshot of the setup of the cluster.
+4) Create a Job and give the the Google storage path of the .py file (created in step 1) in the main file section of the Job. Submit the job on the created cluster.
 
 # Contributing
 //TBD
