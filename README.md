@@ -66,6 +66,21 @@ All source code is included in the src directory of the repository
     The third argument should be the directory of all of the byte files
     
     The fourth argument should be the location of a text file containign names of byte files to classify
+  ### spark_NB.py:
+    This script creates a pipeline around the spark implementation of Naive Bayes using a regex tokenizer to split the words and creates a list of bigrams per each document. A Term frequency feature list is created using spark's hashing TF. This featurization is passed to the Naive Bayes model.
+    
+    The Script can be run as spark-submit spark_NB.py [args]
+    
+    The first argument should be the location of a text file containing names of byte files to train the model
+    
+    The second argument should be the location of a test file containing training labels
+    
+    the third argument should be the location of a text file containg names of files to classify
+    
+    the fourth argument should be the location of testing labels ('None' should be provided if there are no testing files)
+    
+    The fifth argument should be the directory of the byte files to be used
+    
     
 
 # Contributing
