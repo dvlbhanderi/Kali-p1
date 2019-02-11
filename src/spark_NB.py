@@ -4,6 +4,7 @@ from pyspark import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.ml.classification import NaiveBayes
 from pyspark.ml.feature import CountVectorizer, HashingTF, RegexTokenizer
+from pyspark.ml.feature import NGram
 from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import StringIndexer
@@ -53,10 +54,11 @@ def create_pipeline():
 
     tokenizer = RegexTokenizer(inputCol="text", outputCol="words",
                                pattern="(?<=\\s)..", gaps=False)
-    hashingTF = HashingTF(numFeatures=256, inputCol=tokenizer.getOutputCol(),
+    ngram = NGram(n=2, inputCol="words", outputCol="grams")
+    hashingTF = HashingTF(numFeatures=65792, inputCol=ngram.getOutputCol(),
                           outputCol="features")
     nb = NaiveBayes(smoothing=1)
-    pipeline = Pipeline(stages=[tokenizer, hashingTF, nb])
+    pipeline = Pipeline(stages=[tokenizer, ngram, hashingTF, nb])
 
     return(pipeline)
 
@@ -79,7 +81,6 @@ dat_test.show()
 pred = model.transform(dat_test)
 pred.persist()
 pred.show()
-
 
 pred_list = pred.select("prediction").rdd.map(lambda x: int(x[0]+1)).collect()
 print(pred_list)
