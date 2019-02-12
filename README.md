@@ -14,7 +14,7 @@ This repo consists of a large scale classifier to classify the documents as bein
 
 ## Getting Started
 
-Make sure you have all the prerequisites installed before proceeding. Skipping or missing certain dependencies will give     you some errors that will waste a considerable amount of your time. Especially while installing Apache Spark, keep in       mind that there are some versions of Java that are not yet supported. Also add winutils.exe file separately while           installing Apache Spark on Windows.
+Make sure you have all the prerequisites installed before proceeding. Skipping or missing certain dependencies will give you some errors that will waste a considerable amount of your time. Especially while installing Apache Spark, keep in mind that there are some versions of Java that are not yet supported. Also add winutils.exe file separately while installing Apache Spark on Windows.
 
 ### Prerequisites
 
@@ -29,12 +29,12 @@ List of requirements and links to install them:
 - [Google Cloud Platform or similar service](https://cloud.google.com/docs/)
 
 # Data
-    Data from the Microsoft Malware Classification Challenge is used for this project.
+Data from the Microsoft Malware Classification Challenge is used for this project.
   ## Data Location
-    https://storage.googleapis.com/uga-dsp/project1/data/bytes/<file>
-    OR
-    gs://uga-dsp/project1/data/bytes/<file>
-  
+* https://storage.googleapis.com/uga-dsp/project1/data/bytes/<file>
+OR
+* gs://uga-dsp/project1/data/bytes/<file>
+
   ## File Structure
     Each file looks as follows :
     '''
@@ -107,9 +107,9 @@ Instruction to load the parquet file :
 
 
 For information on random forest algorithm, you can refer following pages :-
-https://en.wikipedia.org/wiki/Random_forest
-https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd
-https://www.youtube.com/watch?v=D_2LkhMJcfY
+* https://en.wikipedia.org/wiki/Random_forest
+* https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd
+* https://www.youtube.com/watch?v=D_2LkhMJcfY
     
     
     
