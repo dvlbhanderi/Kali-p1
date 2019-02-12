@@ -1,6 +1,8 @@
 # Kali-p1
 
-This repo consists of a large scale classifier to classify the documents as being under one of the following nine malware categories :-
+This repo consists of several efforts to tackle document classification
+
+Our work was focused on the dataset from the [Microsoft Malware Classification Challenge](https://www.kaggle.com/c/malware-classification/). The problem is to classify documents as being under one of the following nine malware categories :-
 * 1.) Rammit
 * 2.) Lollipop
 * 3.) Kelihos_ver3
@@ -11,6 +13,11 @@ This repo consists of a large scale classifier to classify the documents as bein
 * 8.) Obfuscator.ACY
 * 9.) Gatak
 
+## Approach
+We explored a few different approaches. Initially we begain implementing our own Naive Bayes classifier. However due to time constraints and memory inefficiencies we transitioned to building pipelines using preimplemented modules in the Apache Spark Pyspark API.
+
+#### Naive Bayes
+Our first pipeline focused on using a Naive Bayes classifier. It can be found in src/spark_NB.py. It uses a regex tokenizer to remove line pointers from the byte files and tokenize the bytewords. The resulting tokens are passed into a n-gram featurizer, which coerces the tokens into bigrams. The bigrams are then counted using Spark's hashing term frequency method [here](https://spark.apache.org/docs/2.2.0/api/python/pyspark.mllib.html#pyspark.mllib.feature.HashingTF). These hashed word counts are used as the features in a Naive Bayes model with a simple additive smoothing value of one. With this pipeline we achieved an accuracy of 80%
 
 ## Getting Started
 
@@ -52,31 +59,31 @@ All the other hexadecimal pairs are the code of the malware instance and are use
 All source code is included in the src directory of the repository
 
   ### spark-tests.py: (development discontinued due to time constraint)
-    This file can be run using '$ python spark-tests.py' and will boot up a local spark session and test each of the functions in malware_classifier.py
+This file can be run using '$ python spark-tests.py' and will boot up a local spark session and test each of the functions in malware_classifier.py
   ### malware_classifier.py: (development discontinued due to time constraint)
-    This script must be submitted to a spark session as a job using '$ spark-submit malware_classifier [args]'
+This script must be submitted to a spark session as a job using '$ spark-submit malware_classifier [args]'
     
-    The first argument should be the location of a text file containing names of byte files to train the model
+The first argument should be the location of a text file containing names of byte files to train the model
     
-    The second argument should be the location of a text file containing training labels
+The second argument should be the location of a text file containing training labels
     
-    The third argument should be the directory of all of the byte files
+The third argument should be the directory of all of the byte files
     
-    The fourth argument should be the location of a text file containign names of byte files to classify
+The fourth argument should be the location of a text file containign names of byte files to classify
   ### spark_NB.py:
-    This script creates a pipeline around the spark implementation of Naive Bayes using a regex tokenizer to split the words and creates a list of bigrams per each document. A Term frequency feature list is created using spark's hashing TF. This featurization is passed to the Naive Bayes model.
+This script creates a pipeline around the spark implementation of Naive Bayes using a regex tokenizer to split the words and creates a list of bigrams per each document. A Term frequency feature list is created using spark's hashing TF. This featurization is passed to the Naive Bayes model. Once the model is trained, it will fit the testing dataset and print the predictions to standard out. These can be copied and pasted into another buffer or piped into a text file as desired.
     
-    The Script can be run as spark-submit spark_NB.py [args]
+The Script can be run as spark-submit spark_NB.py [args]
     
-    The first argument should be the location of a text file containing names of byte files to train the model
+The first argument should be the location of a text file containing names of byte files to train the model
     
-    The second argument should be the location of a test file containing training labels
+The second argument should be the location of a test file containing training labels
     
-    the third argument should be the location of a text file containg names of files to classify
+the third argument should be the location of a text file containg names of files to classify
     
-    the fourth argument should be the location of testing labels ('None' should be provided if there are no testing files)
+the fourth argument should be the location of testing labels ('None' should be provided if there are no testing files)
     
-    The fifth argument should be the directory of the byte files to be used
+The fifth argument should be the directory of the byte files to be used
     
    ### random_forest.py
 This script implements random forest algorithm on the given dataset to generate predictions.
