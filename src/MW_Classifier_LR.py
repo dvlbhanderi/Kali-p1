@@ -90,3 +90,44 @@ print("Data fetched successful.")
 df_train_original = sqlContext.createDataFrame(rdd_train_text, schema=["index","category", "text"])
 df_train_original.show()
 df_test_original = sqlContext.createDataFrame(rdd_test_text, schema=["index", "category", "text"])
+
+#Index the labels.
+indexer = StringIndexer(inputCol="category", outputCol="label")
+labels = indexer.fit(df_train_original).labels
+
+#Tokenize the document by each word and transform.
+tokenizer = Tokenizer(inputCol="text", outputCol="words")
+print("1.Tokenize")
+
+#Using the tokenized word find 4-gram words and transform.
+#ngram = NGram(n=1, inputCol=tokenizer.getOutputCol(), outputCol="nGrams")
+#print("2.Ngram.")
+
+#Create the hashing function from the tokens and find features.
+hashingTF = HashingTF(inputCol=tokenizer.getOutputCol(), outputCol="features", numFeatures=10000)
+print("3.Hashing.")
+
+#Train the naive bayes model.
+lr = LogisticRegression(maxIter=10, featuresCol = 'features', labelCol = 'label', family="multinomial")
+print("4.logistic regression")
+
+#Convert Prediction back to the category.
+converter = IndexToString(inputCol="prediction", outputCol="predictionCat", labels=labels)
+
+#Pipeline.
+pipeline = Pipeline(stages=[indexer, tokenizer, hashingTF, lr, converter])
+
+#Fit the model.
+model = pipeline.fit(df_train_original)
+print("5.Model done.")
+
+#Predict the output.
+prediction = model.transform(df_test_original)
+print("Prediction Done.")
+print(prediction)
+
+#Find accuracy from the correctly identified results.
+prediction_result = prediction.select('index', 'category', 'predictionCat').orderBy('index', ascending=True)
+#prediction_result.collect()
+prediction_result.select(prediction_result["predictionCat"]).coalesce(1).write.text('gs://mw_classifier/large_LR_results4')
+print("Done")
