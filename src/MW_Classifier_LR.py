@@ -54,14 +54,14 @@ sc = SparkContext.getOrCreate(conf=conf)
 sqlContext = SQLContext(sc)
 
 #Get the file names and index with zipWithIndex.
-rdd_train_x = sc.textFile("gs://uga-dsp/project1/files/X_small_train.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
+rdd_train_x = sc.textFile("gs://uga-dsp/project1/files/X_train.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
 
 #Get the labels and index with zipWithIndex.
-rdd_train_y = sc.textFile("gs://uga-dsp/project1/files/y_small_train.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
+rdd_train_y = sc.textFile("gs://uga-dsp/project1/files/y_train.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
 
 #Get the file names for testing and index with zipWithIndex.
-rdd_test_x = sc.textFile("gs://uga-dsp/project1/files/X_small_test.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
-rdd_test_y = sc.textFile("gs://uga-dsp/project1/files/y_small_test.txt").zipWithIndex().map(lambda l:(l[1], l[0]))
+rdd_test_x = sc.textFile("gs://uga-dsp/project1/files/X_test.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
+rdd_test_y = sc.textFile("gs://uga-dsp/project1/files/y_train.txt").zipWithIndex().map(lambda l:(l[1], l[0]))
 
 #Join training by index to create a merged set.
 rdd_train = rdd_train_x.join(rdd_train_y)
@@ -110,8 +110,7 @@ prediction = model.transform(df_test_original)
 print("Prediction Done.")
 print(prediction)
 
-#Find accuracy from the correctly identified results.
+#Collecting identified results with index.
 prediction_result = prediction.select('index', 'category', 'predictionCat').orderBy('index', ascending=True)
-#prediction_result.collect()
 prediction_result.select(prediction_result["predictionCat"]).coalesce(1).write.text('gs://mw_classifier/large_LR_results4')
 print("Done")
