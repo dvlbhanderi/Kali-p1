@@ -79,12 +79,12 @@ labels = indexer.fit(df_train_original).labels
 tokenizer = Tokenizer(inputCol="text", outputCol="words")
 print("1.Tokenize")
 
-#Using the tokenized word find 4-gram words and transform.
-#ngram = NGram(n=1, inputCol=tokenizer.getOutputCol(), outputCol="nGrams")
-#print("2.Ngram.")
+Using the tokenized word find 1-gram words and transform.
+ngram = NGram(n=1, inputCol=tokenizer.getOutputCol(), outputCol="nGrams")
+print("2.Ngram.")
 
 #Create the hashing function from the tokens and find features.
-hashingTF = HashingTF(inputCol=tokenizer.getOutputCol(), outputCol="features", numFeatures=10000)
+hashingTF = HashingTF(inputCol=ngram.getOutputCol(), outputCol="features", numFeatures=10000)
 print("3.Hashing.")
 
 #Train the naive bayes model.
