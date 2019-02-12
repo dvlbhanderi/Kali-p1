@@ -8,7 +8,7 @@
 ## Dhaval Bhanderi (dvlbhanderi)
 
 ## Priyank Malviya (priyankmalviya)
- * coded preprocessing and smoothing
+ * implemented preprocessing and smoothing for implementation of Naive Bayes from scratch
  * implemented random forest for classification using n-grams and bi-grams
  * Basic structure of README
  
