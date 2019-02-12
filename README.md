@@ -139,12 +139,7 @@ It is divided into following steps :-
 17. Saving the predictions on google cloud.
 
 
-For information on random forest algorithm, you can refer following pages :-
-* https://en.wikipedia.org/wiki/Random_forest
-* https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd
-* https://www.youtube.com/watch?v=D_2LkhMJcfY
-    
-    
+For more information on random forest refer 'References' section. 
     
 # Execution on the Google Cloud Platform
 1) Set up a [project](https://cloud.google.com/dataproc/docs/guides/setup-project)
@@ -153,10 +148,19 @@ For information on random forest algorithm, you can refer following pages :-
 4) Now you can create a [Cluster](https://cloud.google.com/dataproc/docs/guides/create-cluster). Issue #29 of this repo        gives a snapshot of the setup of the cluster.
 5) Create a Job and give the the Google storage path of the .py file (created in step 2) in the main file section of the        Job. [Submit](https://cloud.google.com/dataproc/docs/guides/submit-job) the job on the created cluster.
 
+
+# References
+* https://en.wikipedia.org/wiki/Random_forest
+* https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd
+* https://www.youtube.com/watch?v=D_2LkhMJcfY
+* https://towardsdatascience.com/multi-class-text-classification-with-scikit-learn-12f1e60e0a9f
+
+
 # Authors
 See the [Contributors](https://github.com/dsp-uga/Kali-p1/blob/master/CONTRIBUTORS.md) file for details.
 
 # Licencse
 See the [License](https://github.com/dsp-uga/Kali-p1/blob/master/LICENSE) file for details.
+
 
 
