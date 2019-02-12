@@ -80,6 +80,7 @@
     
    ### random_forest.py
     This script implements random forest algorithm on the given dataset to generate predictions.
+    
     It is divided into following steps :-
     1. Configuring the spark session.
     2. Reading the training files.
@@ -102,7 +103,13 @@
     Steps #5, #7, #10, #15 could be skipped while running this script by commenting out the corresponding lines in the code.
     But is strongly recommended, as saving the files can eliminate the need to re run the whole script in case any error is     encountered during execution of the script. We can always start from the point of failure if our data is saved.
     
-    ### Instruction to load the parquet file :
+    Instruction to load the parquet file :
+    
+    
+    For information on random forest algorithm, you can refer following pages :-
+    https://en.wikipedia.org/wiki/Random_forest
+    https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd
+    https://www.youtube.com/watch?v=D_2LkhMJcfY
     
     
     
