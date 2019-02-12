@@ -9,7 +9,7 @@
 
 ## Priyank Malviya (priyankmalviya)
  * coded preprocessing and smoothing
- * implemented random forest for classification
+ * implemented random forest for classification using n-grams and bi-grams
  * Basic structure of README
  
 ## Rutu Ghandi (rutugandhi)
