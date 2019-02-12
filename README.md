@@ -1,6 +1,6 @@
 # Kali-p1
 
-    This repo consists of a large scale classifier to classify the documents as being under one of the following nine       malware categories :-
+    This repo consists of a large scale classifier to classify the documents as being under one of the following nine malware categories :-
     * 1.) Rammit
     * 2.) Lollipop
     * 3.) Kelihos_ver3
@@ -18,7 +18,7 @@
 
 ### Prerequisites
 
-    List of requirements and links to install them
+    List of requirements and links to install them:
 
     - [Python 3.6](https://www.python.org/downloads/release/python-360/)
     - [Anaconda](https://www.anaconda.com/) - Python Environment virtualization.
