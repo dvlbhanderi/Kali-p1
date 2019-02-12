@@ -49,26 +49,17 @@ conf = (conf.setMaster('local[*]')).set('spark.executor.memory', '20G').set('spa
 
 conf =conf.set('spark.driver.memory', '25g')
 conf =conf.set('spark.executor.memory', '20g')
-#conf =conf.set('spark.driver.cores', '4')
-#conf =conf.set('spark.executor.cores', '6')
-#conf =conf.set('spark.python.worker.memory', '4g')
-#conf =conf.set('spark.yarn.am.memoryOverhead', '1g')
-#conf =conf.set('spark.yarn.driver.memoryOverhead', '2g')
-#conf =conf.set('spark.yarn.executor.memoryOverhead', '2g')
-#conf =conf.set('spark.driver.maxResultSize', '6g')
 
-#Create the spark context.
 sc = SparkContext.getOrCreate(conf=conf)
-#Create SQL context.
 sqlContext = SQLContext(sc)
 
-#Get the training file names and make zip index as key.
+#Get the file names and index with zipWithIndex.
 rdd_train_x = sc.textFile("gs://uga-dsp/project1/files/X_small_train.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
 
-#Get the training lables and make zip index as key.
+#Get the labels and index with zipWithIndex.
 rdd_train_y = sc.textFile("gs://uga-dsp/project1/files/y_small_train.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
 
-#Get the testing file names and make zip index as key.
+#Get the file names for testing and index with zipWithIndex.
 rdd_test_x = sc.textFile("gs://uga-dsp/project1/files/X_small_test.txt").zipWithIndex().map(lambda l:(l[1],l[0]))
 rdd_test_y = sc.textFile("gs://uga-dsp/project1/files/y_small_test.txt").zipWithIndex().map(lambda l:(l[1], l[0]))
 
@@ -76,22 +67,15 @@ rdd_test_y = sc.textFile("gs://uga-dsp/project1/files/y_small_test.txt").zipWith
 rdd_train = rdd_train_x.join(rdd_train_y)
 rdd_test = rdd_test_x.join(rdd_test_y)
 
-#Get the  file list files.
-#Making the pair of (Label, Bytes)
+#Making the pair of (Index, Label, Bytes)
 rdd_train_text = rdd_train.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
 rdd_test_text = rdd_test.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
-
-#Collect the data.
-#df_train_text = rdd_train_text.toDF("category", "text")
-#df_train_text.show()
-#rdd_test_text.collect()
-print("Data fetched successful.")
 
 df_train_original = sqlContext.createDataFrame(rdd_train_text, schema=["index","category", "text"])
 df_train_original.show()
 df_test_original = sqlContext.createDataFrame(rdd_test_text, schema=["index", "category", "text"])
 
-#Index the labels.
+#Indexing the labels.
 indexer = StringIndexer(inputCol="category", outputCol="label")
 labels = indexer.fit(df_train_original).labels
 
