@@ -1,5 +1,4 @@
 from pyspark import SparkContext,SparkConf
-from pyspark import SparkContext,SparkConf
 from pyspark.sql.types import *
 from pyspark.sql.functions import udf,col,split
 from pyspark.sql import SQLContext
@@ -14,7 +13,7 @@ import re
 import pyspark
 
 
-def fetch_url(file_row):
+def fetch_url(rdd_dat):
     path = 'https://storage.googleapis.com/uga-dsp/project1/data/bytes'
     fetch_url = path+"/"+ file_row + ".bytes"
 
@@ -23,16 +22,13 @@ def fetch_url(file_row):
     return(byte_text)
 
 
-def preprocessing(data_row):
+def preprocessing(rdd_dat):
 
     #Removing the blank lines.
     data_row = re.sub('\\r\\n', ' ', str(data_row))
 
     #Removing the pair of unnecessary question-marks.
     data_row = re.sub('\??', '', str(data_row))
-
-    #Removing the rows of Cs.
-    data_row = re.sub('CC CC CC CC CC CC CC CC', '', str(data_row))
 
     #Remove the headers. Words larger than 2 characters.
     data_row = re.sub(r'\b[A-Z|0-9]{3,}\b', '', str(data_row))
@@ -42,7 +38,7 @@ def preprocessing(data_row):
 
     #Strip the text
     data_row = data_row.strip()
-    return data_row
+    return rdd_dat
 
 conf = SparkConf().setAppName('P2MalewareClassification')
 conf = (conf.setMaster('local[*]')).set('spark.executor.memory', '20G').set('spark.driver.memory','25G').set('spark.driver.maxResultSize','13G')
