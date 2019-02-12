@@ -10,6 +10,7 @@
 ## Priyank Malviya (priyankmalviya)
  * coded preprocessing and smoothing
  * implemented random forest for classification
+ * Basic structure of README
  
 ## Rutu Ghandi (rutugandhi)
  * Implemented the prior calculation for implementation of NB from scratch
