@@ -86,6 +86,37 @@ the fourth argument should be the location of testing labels ('None' should be p
 The fifth argument should be the directory of the byte files to be used
     
    ### random_forest.py
+
+This script should be run as spark-submit random_forest.py[args]
+
+To accept the arguments the script uses argparse library of python.
+
+All the arguments should be passed with the argument label as specified in the script. All arguments are not compulsory,
+and can be specified as per requirements.
+
+Following arguments can be used in the script :-
+
+1. --mode : can be train or test depending on the phase of execution.
+2. --filename_path : path of the directory where hashcodes are stored.
+3. --filelabel_path : path of the directory where the labels of each file are stored.
+4. --data_path : path of the directory where the actual data is stored.
+5. --save_path : path where user wants to save the data during training phase or testing phase.
+6. --model_path : path from where the random forest model and countvector model created during training phase  has to be loaded.
+7. --exec_mem : memory space that user wants to allocate for the executors.
+8. --driver_mem : memory space that user wants to allocate for the driver.
+9. --result_mem : memory space that user wants to allocate for the result.
+
+Each of these labels could be passed with the desired values while running the script.
+
+Eg Training:-
+```
+spark-submit random_forest.py --mode train --filename_path /path/to/filename --filelabel_path /path/to/labels --data_path /path/to/data --save_path /path/to/store --exec_mem '20G' --driver_mem '40G' --result_mem '12G'
+```
+Eg Testing :-
+```
+spark-submit random_forest.py --mode test --filename_path /path/to/filename --data_path /path/to/data --save_path /path/to/store  --model_path /path/to/load/model --exec_mem '20G' --driver_mem '40G' --result_mem '12G'
+```
+
 This script implements random forest algorithm on the given dataset to generate predictions.
 
 It is divided into following steps :-
@@ -106,11 +137,6 @@ It is divided into following steps :-
 15. Saving the transformed testing file as a parquet file on google cloud.
 16. Getting the predictions.
 17. Saving the predictions on google cloud.
-
-Steps #5, #7, #10, #15 could be skipped while running this script by commenting out the corresponding lines in the code.
-But is strongly recommended, as saving the files can eliminate the need to re run the whole script in case any error is     encountered during execution of the script. We can always start from the point of failure if our data is saved.
-
-Instruction to load the parquet file :
 
 
 For information on random forest algorithm, you can refer following pages :-
