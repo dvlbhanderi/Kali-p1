@@ -9,9 +9,10 @@
 
 ## Priyank Malviya (priyankmalviya)
  * implemented preprocessing and smoothing for implementation of Naive Bayes from scratch
- * implemented random forest for classification using n-grams and bi-grams
+ * extracted features from byte file.
+ * implemented random forest for classification.
  * Basic structure of README
- 
+
 ## Rutu Ghandi (rutugandhi)
  * Implemented the prior calculation for implementation of NB from scratch
  * Preprocessed the byte files to and converted to images
