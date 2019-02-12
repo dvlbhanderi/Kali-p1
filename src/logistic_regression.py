@@ -6,24 +6,21 @@ import numpy as np
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.ml.classification import NaiveBayes, LogisticRegression
-#from pyspark.ml.feature import HashingTF, IDF, Tokenizer
-from pyspark.ml.feature import CountVectorizer, HashingTF, Tokenizer, RegexTokenizer
+from pyspark.ml.feature import CountVectorizer, HashingTF, Tokenizer, RegexTokenizer, StringIndexer
 from operator import add
-import re
-from pyspark.ml.feature import StringIndexer
 from pyspark.ml import Pipeline
 from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
-"""
-    reads in byte date from a list of filenames given in file located
-    at x_filename. if y_filename is supplied labels will be read in and a map
-    will be created as well and a label column added to the returned dataframe
-    """
+import re
 
 sc = SparkContext.getOrCreate()
 spark=SparkSession(sc)
 def read_data(byte_data_directory, x_filename, y_filename=None):
-    
+    """
+    reads in byte date from a list of filenames given in file located
+    at x_filename. if y_filename is supplied labels will be read in and a map
+    will be created as well and a label column added to the returned dataframe
+    """
     xfile = sc.textFile(x_filename)
     def func(x):
         x=x.split()
@@ -46,9 +43,9 @@ def read_data(byte_data_directory, x_filename, y_filename=None):
 
 
     """
-    creates model pipeline
+    model pipeline
     Currently uses RegexTokenizer to get bytewords as tokens, hashingTF to
-    featurize the tokens as word counts, and NaiveBayes to fit and classify
+    featurize the tokens as word counts, and Logistic Regression to fit and classify
     This is where most of the work will be done in improving the model
     """
 
@@ -92,10 +89,3 @@ print("Accuracy=%g" % (accuracy))
 print("Test Error=%g" % (1.0-accuracy))
 
 
-#spark.yarn.executor.memoryoverhead
-#spark.driver.maxResultSize
-#spark.driver.memory
-#spark.executor.memory
-#pred.select("prediction").withColumn("pred1",col("prediction").cast(StringType()).select("pred1").coalesce(1).write.text('gs://black_bucket/model_out')
-#rdd().map(lambda x: int(x+1))
-#data = sc.wholeTextFiles("/home/rutu/DSP/a7Niv6pD5WPycnQK1TZ8.bytes")
