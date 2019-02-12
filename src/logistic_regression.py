@@ -55,6 +55,7 @@ tokenizer = RegexTokenizer(inputCol="text", outputCol="words",
 hashingTF = HashingTF(numFeatures=256, inputCol=tokenizer.getOutputCol(),
                           outputCol="features")
 lr = LogisticRegression(maxIter=1, featuresCol="features", labelCol="label", family="multinomial")
+
 pipeline = Pipeline(stages=[tokenizer, hashingTF, label_stringIdx, lr])
 
 
@@ -70,19 +71,21 @@ paramGrid = ParamGridBuilder() \
 crossval = CrossValidator(estimator=pipeline,
                           estimatorParamMaps=paramGrid,
                           evaluator=MulticlassClassificationEvaluator(),
-                          numFolds=3)  # use 3+ folds in practice
+                          numFolds=3)  
+
+#fitting the model on the training data
 model = crossval.fit(dat_train)
 
 dat_test = read_data('gs://uga-dsp/project1/data/bytes/',
-                      'gs://black_bucket/X_small_test.txt', 'gs://black_bucket/y_small_test.txt')
+                      'gs://ugablack_bucket/X_small_test.txt', 'gs://black_bucket/y_small_test.txt')
 
 # create predictions on testing set
 pred = model.transform(dat_test)
 pred.persist()
 pred.show()
 pred.select("prediction").distinct().show()
-pred.select("label").distinct().show()
-pred.select("category").distinct().show()
+
+#Model evaluation
 evaluator=MulticlassClassificationEvaluator(labelCol="category", predictionCol="prediction", metricName="accuracy")
 accuracy=evaluator.evaluate(pred)
 print("Accuracy=%g" % (accuracy))
