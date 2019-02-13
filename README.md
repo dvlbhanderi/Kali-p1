@@ -98,7 +98,9 @@ cross-validation over a grid of parameters is expensive. E.g., in the example be
    The Script can be run as spark-submit logistic_regression.py [args]
    The list of arguments to be passed is the same as  give above in the spark_NB.py section.
    Eg:
-                  `spark-submit logistic_regression.py /path/to/list/of/train-file-names /path/to/list/of/train-labels /path/to/list/of/test-file-names /path/to/list/of/test-labels /path/to/bytefiles-directory
+
+     spark-submit logistic_regression.py /path/to/list/of/train-file-names /path/to/list/of/train-labels /path/to/list/of/test-file-names /path/to/list/of/test-labels /path/to/bytefiles-directory
+
     
    ### random_forest.py
 
