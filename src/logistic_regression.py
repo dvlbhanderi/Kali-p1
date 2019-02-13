@@ -58,10 +58,11 @@ lr = LogisticRegression(maxIter=1, featuresCol="features", labelCol="label", fam
 
 pipeline = Pipeline(stages=[tokenizer, hashingTF, label_stringIdx, lr])
 
+testLabels = sys.argv[4] if sys.argv[4] != 'None' else None
 
 
-dat_train = read_data('gs://uga-dsp/project1/data/bytes/',
-                      'gs://black_bucket/X_small_train.txt', 'gs://black_bucket/y_small_train.txt')
+dat_train = read_data(sys.argv[5],
+                      sys.argv[1], sys.argv[2])
 
 paramGrid = ParamGridBuilder() \
     .addGrid(hashingTF.numFeatures, [10, 100, 1000]) \
@@ -76,8 +77,8 @@ crossval = CrossValidator(estimator=pipeline,
 #fitting the model on the training data
 model = crossval.fit(dat_train)
 
-dat_test = read_data('gs://uga-dsp/project1/data/bytes/',
-                      'gs://ugablack_bucket/X_small_test.txt', 'gs://black_bucket/y_small_test.txt')
+dat_test = read_data(sys.argv[5],
+                      sys.argv[3], testLabels)
 
 # create predictions on testing set
 pred = model.transform(dat_test)
