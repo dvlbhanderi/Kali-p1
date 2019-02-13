@@ -94,19 +94,16 @@ print("4.logistic regression")
 #Convert Prediction back to the category.
 converter = IndexToString(inputCol="prediction", outputCol="predictionCat", labels=labels)
 
-#Pipeline.
+#Build the Pipeline for Logistic Regression
 pipeline = Pipeline(stages=[indexer, tokenizer, hashingTF, lr, converter])
 
-#Fit the model.
+#Fit the model for training
 model = pipeline.fit(df_train_original)
-print("5.Model done.")
 
-#Predict the output.
-prediction = model.transform(df_test_original)
-print("Prediction Done.")
-print(prediction)
+#Predicting the test file.
+predictions = model.transform(df_test_original)
 
 #Collecting identified results with index.
-prediction_result = prediction.select('index', 'category', 'predictionCat').orderBy('index', ascending=True)
+prediction_result = predictions.select('index', 'category', 'predictionCat').orderBy('index', ascending=True)
 prediction_result.select(prediction_result["predictionCat"]).coalesce(1).write.text('gs://mw_classifier/large_LR_results4')
 print("Done")
