@@ -12,7 +12,7 @@ import argparse
 import re
 import pyspark
 
-
+#This method is to download the data from the web.
 def fetch_url(rdd_dat):
     path = 'https://storage.googleapis.com/uga-dsp/project1/data/bytes'
     fetch_url = path+"/"+ file_row + ".bytes"
@@ -21,7 +21,7 @@ def fetch_url(rdd_dat):
     byte_text = requests.get(fetch_url).text
     return(byte_text)
 
-
+#This method will perform basic preprocessing on the text data.
 def preprocessing(rdd_dat):
 
     #Removing the blank lines.
