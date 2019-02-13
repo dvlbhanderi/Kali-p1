@@ -13,12 +13,12 @@ import re
 import pyspark
 
 #This method is to download the data from the web.
-def fetch_url(rdd_dat):
+def fetch_data(rdd_dat):
     path = 'https://storage.googleapis.com/uga-dsp/project1/data/bytes'
-    fetch_url = path+"/"+ file_row + ".bytes"
+    fetch_data = path+"/"+ file_row + ".bytes"
 
     #Get the file data and convert into text.
-    byte_text = requests.get(fetch_url).text
+    byte_text = requests.get(fetch_data).text
     return(byte_text)
 
 #This method will perform basic preprocessing on the text data.
@@ -64,8 +64,8 @@ rdd_train = rdd_train_x.join(rdd_train_y)
 rdd_test = rdd_test_x.join(rdd_test_y)
 
 #Making the pair of (Index, Label, Bytes)
-rdd_train_text = rdd_train.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
-rdd_test_text = rdd_test.map(lambda x: (x[0], x[1][1], fetch_url(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
+rdd_train_text = rdd_train.map(lambda x: (x[0], x[1][1], fetch_data(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
+rdd_test_text = rdd_test.map(lambda x: (x[0], x[1][1], fetch_data(x[1][0]))).map(lambda x: (x[0], x[1], preprocessing(x[2])))
 
 df_train_original = sqlContext.createDataFrame(rdd_train_text, schema=["index","category", "text"])
 df_train_original.show()
