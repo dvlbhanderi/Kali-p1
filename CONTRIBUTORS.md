@@ -16,12 +16,14 @@
  * implemented preprocessing and smoothing for implementation of Naive Bayes from scratch
  * extracted features from byte file.
  * implemented random forest for classification achieving ~97% accuracy.
- * Created README.
- * created WIKI.
+ * Contributed to README.
+ * Contributed to WIKI.
 
 
 ## Rutu Ghandi (rutugandhi)
  * Implemented the prior calculation for implementation of NB from scratch
  * Preprocessed the byte files to and converted to images
- * Explored the spark deep learning library for classification of images
- * Implemented logistic regression with OneVsRest 
+ * Explored the spark deep learning library for classification of images and got ~44% preliminary accuracy
+ * Implemented logistic regression with cross validation  ~79% accuracy
+ * Contributed to README.
+ * Contributed to WIKI.
