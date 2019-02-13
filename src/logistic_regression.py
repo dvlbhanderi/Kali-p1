@@ -64,6 +64,13 @@ testLabels = sys.argv[4] if sys.argv[4] != 'None' else None
 dat_train = read_data(sys.argv[5],
                       sys.argv[1], sys.argv[2])
 
+
+# The Pipeline is treated as an Estimator, wrapping it in a CrossValidator instance.
+# This will allow us to jointly choose parameters for all Pipeline stages.
+# A set of Estimator ParamMaps and an Evaluator are required by a CrossValidator. 
+# A ParamGridBuilder is used to construct a grid of parameters to search over.
+# With 3 values for hashingTF.numFeatures and 2 values for lr.regParam,
+# this grid will have 3 x 2 = 6 parameter settings for CrossValidator to choose from.
 paramGrid = ParamGridBuilder() \
     .addGrid(hashingTF.numFeatures, [10, 100, 256]) \
     .addGrid(lr.regParam, [0.1, 0.01]) \
@@ -74,7 +81,7 @@ crossval = CrossValidator(estimator=pipeline,
                           evaluator=MulticlassClassificationEvaluator(),
                           numFolds=3)  
 
-#fitting the model on the training data
+#fitting using cross validation to find the best model 
 model = crossval.fit(dat_train)
 
 dat_test = read_data(sys.argv[5],
