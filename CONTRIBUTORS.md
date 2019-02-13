@@ -11,8 +11,8 @@
  * implemented preprocessing and smoothing for implementation of Naive Bayes from scratch
  * extracted features from byte file.
  * implemented random forest for classification achieving ~97% accuracy.
- * Basic structure of README.
- * created the WIKI.
+ * Created README.
+ * created WIKI.
 
 
 ## Rutu Ghandi (rutugandhi)
