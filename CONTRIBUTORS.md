@@ -3,6 +3,7 @@
  * set up and wrote testing suite for discontinued Naive Bayes Implementation
  * set up driver skeleton for discontinued Naive Bayes Implementation
  * contributed to README
+ * contributed to wiki
  * wrote spark_NB suite to apply preimplemented Naive Bayes pipeline achieving ~80% accuracy
 
 ## Dhaval Bhanderi (dvlbhanderi)
