@@ -25,19 +25,18 @@ def fetch_data(rdd_dat):
 def preprocessing(rdd_dat):
 
     #Removing the blank lines.
-    data_row = re.sub('\\r\\n', ' ', str(data_row))
+    rdd_dat = re.sub('\\r\\n', ' ', str(rdd_dat))
 
     #Removing the pair of unnecessary question-marks.
-    data_row = re.sub('\??', '', str(data_row))
+    rdd_dat = re.sub('\??', '', str(rdd_dat))
 
     #Remove the headers. Words larger than 2 characters.
-    data_row = re.sub(r'\b[A-Z|0-9]{3,}\b', '', str(data_row))
+    rdd_dat = re.sub(r'\b[A-Z|0-9]{3,}\b', '', str(rdd_dat))
 
     #Remove Multiple Spaces to one.
-    data_row = re.sub(r' +', ' ', str(data_row))
+    rdd_dat = re.sub(r' +', ' ', str(rdd_dat))
 
-    #Strip the text
-    data_row = data_row.strip()
+    rdd_dat = rdd_dat.strip()
     return rdd_dat
 
 conf = SparkConf().setAppName('P2MalewareClassification')
