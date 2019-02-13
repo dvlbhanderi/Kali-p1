@@ -157,6 +157,9 @@ For more information on random forest refer 'References' section.
 * https://en.wikipedia.org/wiki/Random_forest
 * https://en.wikipedia.org/wiki/Naive_Bayes_classifier
 * https://www.statisticssolutions.com/what-is-logistic-regression/
+* https://en.wikipedia.org/wiki/Apache_Spark
+* https://en.wikipedia.org/wiki/Python_(programming_language)
+* 
 
 
 # Authors
