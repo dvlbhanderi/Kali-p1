@@ -12,6 +12,7 @@
  * extracted features from byte file.
  * implemented random forest for classification achieving ~97% accuracy.
  * Basic structure of README.
+ * created the WIKI.
 
 
 ## Rutu Ghandi (rutugandhi)
