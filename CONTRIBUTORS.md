@@ -7,6 +7,7 @@
  * wrote spark_NB suite to apply preimplemented Naive Bayes pipeline achieving ~80% accuracy
 
 ## Dhaval Bhanderi (dvlbhanderi)
+ * Implemented Likelihood calculation for the Naive Bayes classifier from scratch
 
 ## Priyank Malviya (priyankmalviya)
  * implemented preprocessing and smoothing for implementation of Naive Bayes from scratch
