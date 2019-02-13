@@ -154,6 +154,9 @@ For more information on random forest refer 'References' section.
 * https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd
 * https://www.youtube.com/watch?v=D_2LkhMJcfY
 * https://towardsdatascience.com/multi-class-text-classification-with-scikit-learn-12f1e60e0a9f
+* https://en.wikipedia.org/wiki/Random_forest
+* https://en.wikipedia.org/wiki/Naive_Bayes_classifier
+* https://www.statisticssolutions.com/what-is-logistic-regression/
 
 
 # Authors
