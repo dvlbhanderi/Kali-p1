@@ -70,7 +70,9 @@ The second argument should be the location of a text file containing training la
 The third argument should be the directory of all of the byte files
     
 The fourth argument should be the location of a text file containign names of byte files to classify
+
   ### spark_NB.py:
+  
 This script creates a pipeline around the spark implementation of Naive Bayes using a regex tokenizer to split the words and creates a list of bigrams per each document. A Term frequency feature list is created using spark's hashing TF. This featurization is passed to the Naive Bayes model. Once the model is trained, it will fit the testing dataset and print the predictions to standard out. These can be copied and pasted into another buffer or piped into a text file as desired.
     
 The Script can be run as spark-submit spark_NB.py [args]
@@ -84,6 +86,18 @@ the third argument should be the location of a text file containg names of files
 the fourth argument should be the location of testing labels ('None' should be provided if there are no testing files)
     
 The fifth argument should be the directory of the byte files to be used
+    
+   ### logistic_regression.py
+   
+The pipeline consists of four stages: indexer, regextokenizer, hashingTF, and lr
+
+CrossValidator begins by splitting the dataset into a set of folds which are used as separate training and test datasets. E.g., with k=3 folds, CrossValidator will generate 3 (training, test) dataset pairs, each of which uses 2/3 of the data for training and 1/3 for testing. To evaluate a particular ParamMap, CrossValidator computes the average evaluation metric for the 3 Models produced by fitting the Estimator on the 3 different (training, test) dataset pairs.
+
+cross-validation over a grid of parameters is expensive. E.g., in the example below, the parameter grid has 3 values for hashingTF.numFeatures and 2 values for lr.regParam, and CrossValidator uses 3 folds. This multiplies out to (3×2)×3=18 different models being trained. 
+   
+   The Script can be run as spark-submit logistic_regression.py [args]
+   The list of arguments to be passed is the same as  give above in the spark_NB.py section.
+   
     
    ### random_forest.py
 
@@ -116,28 +130,6 @@ Eg Testing :-
 ```
 spark-submit random_forest.py --mode test --filename_path /path/to/filename --data_path /path/to/data --save_path /path/to/store  --model_path /path/to/load/model --exec_mem '20G' --driver_mem '40G' --result_mem '12G'
 ```
-
-This script implements random forest algorithm on the given dataset to generate predictions.
-
-It is divided into following steps :-
-1. Configuring the spark session.
-2. Reading the training files.
-3. Preprocessing the training files.
-4. Converting the training files rdd to dataframe for further operation.
-5. Saving the dataframe formed as parquet file on google cloud.  
-6. Getting the count vector of the training data.
-7. Saving the transformed training data and count vectorizer as parquet file on google cloud.
-8. Type casting the column 'label' in the training data to 'int' type before training the model.
-9. Training the random forest model.
-10. Saving the obtained model as parquet file on google cloud.
-11. Reading the testing files.
-12. Preprocessing the testing files.
-13. Converting the testing file rdd to dataframe.
-14. Transforming the testing file rdd using countvectorizer.
-15. Saving the transformed testing file as a parquet file on google cloud.
-16. Getting the predictions.
-17. Saving the predictions on google cloud.
-
 
 For more information on random forest refer 'References' section. 
     
