@@ -8,6 +8,7 @@
 
 ## Dhaval Bhanderi (dvlbhanderi)
  * Implemented Likelihood calculation for the Naive Bayes classifier from scratch
+ * Implemented preimplemented Logistic Regression pipeline with ~84% accuracy
 
 ## Priyank Malviya (priyankmalviya)
  * implemented preprocessing and smoothing for implementation of Naive Bayes from scratch
