@@ -1,4 +1,4 @@
-# Kali-p1
+# Team Kali: Microsoft Malware Classification
 
 This repo consists of several efforts to tackle document classification
 
